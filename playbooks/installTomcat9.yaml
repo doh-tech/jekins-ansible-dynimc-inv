@@ -1,4 +1,4 @@
-- hosts: Hosts-machine-1
+- hosts: ansiblenode
   become: true
   tasks:
     - name: Install Java
