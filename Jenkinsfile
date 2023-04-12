@@ -1,41 +1,36 @@
 
+pipeline{
+    agent{
+        label "slave1"
+    }
+    
+    environment {
+        new_ec2_instance=credentials('ec2instance') 
+    }
+    stages{
+      stage("Gitclone"){
+          steps{
+              git credentialsId: '61169445-e8b7-4128-b584-c3be0145c1ce', url: 'https://github.com/doh-tech/jekins-ansible-dynimc-inv.git'
+          }
+      }
+      stage('Running terraform Script'){
+          steps{
+              sh "whoami"
+              sh "hostname"
+              sh "terraform -chdir=terraformscripts init"
+              sh "terraform -chdir=terraformscripts apply --auto-approve"
+      }
+      }
+      //Running Ansible playbook
+      stage("running ansible playbook"){
+          steps{
+              sh "ansible-inventory --graph -i inventory/aws_ec2.yaml"
+              sh "ansible-playbook -i inventory/aws_ec2.yaml --private-key=$new_ec2_instance playbooks/installTomcat9.yaml --ssh-common-args='-o StrictHostKeyChecking=no'"
+          }
+      }
 
-pipeline {
-  agent { 
-  label 'ansible'
-  }
-  environment {
-   AWS_EC2_PRIVATE_KEY=credentials('ec2-private-key') 
-  }
-  
-  stages {
-    
-    //Get the Code from GitHub Repo
-    stage('CheckOutCode'){
-      steps{
-        git branch: 'master', credentialsId: 'aeeaa4ad-45b4-4c30-9401-586ac501a9bb', url: 'https://github.com/MithunTechnologiesDevOps/jekins-ansible-dynimc-inv.git'
-      }
-    }
-     
-    //Using Terrafrom can create the Servers
-    
-    stage('CreateServers'){
-      steps{
-       sh "terraform  -chdir=terraformscripts init"
-       sh "terraform  -chdir=terraformscripts apply --auto-approve"
-      }
-    }
-    
-    //Run the playbook
-    stage('RunPlaybook') {
-      steps {
-        sh "whoami"
-        //List the dymaic inventory just for verification
-        sh "ansible-inventory --graph -i inventory/aws_ec2.yaml"
-        //Run playbook using dynamic inventory & limit exuection only fo tomcatservers.
-        sh "ansible-playbook -i inventory/aws_ec2.yaml  playbooks/tomcat-setup.yaml -u ec2-user --private-key=$AWS_EC2_PRIVATE_KEY --limit tomcatservers --ssh-common-args='-o StrictHostKeyChecking=no'"
-      }
-    }
-  
-  }//stages closing
-}//pipeline closing
+
+
+        
+}//stages clossing
+}//pipeline clossing
