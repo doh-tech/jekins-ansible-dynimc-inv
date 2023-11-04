@@ -9,7 +9,7 @@
       user:
         name: tomcat
         shell: /sbin/nologin
-    - name: Tomcat-9 Installation
+    - name: Tomcat-8 Installation
       get_url:
         url: https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.95/bin/apache-tomcat-8.5.95.tar.gz
         dest: /tmp/
@@ -33,7 +33,7 @@
     - name: make tomcat symbolic link
       file:
         src: /usr/local/apache-tomcat-8.5.95
-        dest: /usr/local/tomcat7
+        dest: /usr/local/tomcat8
         owner: tomcat
         group: tomcat
         state: link
