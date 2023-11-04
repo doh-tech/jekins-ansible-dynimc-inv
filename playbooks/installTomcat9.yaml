@@ -53,11 +53,11 @@
           User = tomcat
           Group = tomcat
           Type = oneshot
-          PIDFile =/usr/local/apache-tomcatt-8.5.95/tomcat.pid
+          PIDFile =/usr/local/apache-tomcat-8.5.95/tomcat.pid
           RemainAfterExit = yes
-          ExecStart =/usr/local/apache-tomcatt-8.5.95/bin/startup.sh
-          ExecStop =/usr/local/apache-tomcatt-8.5.95/bin/shutdown.sh
-          ExecReStart =/usr/local/apache-tomcatt-8.5.95/bin/shutdown.sh;/usr/local/apache-tomcat-8.5.95/bin/startup.sh
+          ExecStart =/usr/local/apache-tomcat-8.5.95/bin/startup.sh
+          ExecStop =/usr/local/apache-tomcat-8.5.95/bin/shutdown.sh
+          ExecReStart =/usr/local/apache-tomcat-8.5.95/bin/shutdown.sh;/usr/local/apache-tomcat-8.5.95/bin/startup.sh
           [Install]
           WantedBy = multi-user.target
     - name: chmod 755 tomcat.service
