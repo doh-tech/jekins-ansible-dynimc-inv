@@ -3,7 +3,7 @@
   tasks:
     - name: Install Java
       yum:
-        name: install java-1.8.0-amazon-corretto
+        name: install java-1.8.0-amazon-corretto-devel
         state: present
     - name: add tomcatuser
       user:
