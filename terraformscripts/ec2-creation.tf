@@ -2,7 +2,7 @@ provider "aws"{
 region = "us-east-1"
 
 }
-resource = "aws_instance" "ec2instance"
+resource  "aws_instance" "ec2instance"
 ami = "ami-05c13eab67c5d8861"
 key_name="window-key"
 security_groups = ["launch-wizard"]
