@@ -1,15 +1,14 @@
-provider "aws" {
- region = "us-east-1"   
-  
+provider "aws"{
+region = "us-east-1"
+
+}
+resource = "aws_instance" "ec2instance"
+ami = "ami-05c13eab67c5d8861"
+key_name="window-key"
+security_groups = ["launch-wizard"]
+instance_type = "t2.micro"
+tags = {
+Name = "tomcatserver"
 }
 
-resource "aws_instance" "newinstance" {
-  ami = "ami-016eb5d644c333ccb"
-  instance_type = "t2.micro"
-  security_groups = ["launch-wizard-13","launch-wizard-12"]
-  key_name = "Ansible-New"
-  tags = {
-    Name = "tomcatserver"
-  }
 }
-
