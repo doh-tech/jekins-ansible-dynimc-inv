@@ -1,0 +1,25 @@
+properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5'))])
+pipeline{
+    
+    agent{
+        label "slave1"
+    }
+    
+   environment{
+        EC2_USER_KEY=credentials("ec2instanceprivatekey")
+   }
+    stages{
+        stage("GitCheckOut"){
+            steps{
+          git credentialsId: '2f29cbb2-b2e8-4028-9f25-fc031a7fd916', url: 'https://github.com/doh-tech/jekins-ansible-dynimc-inv.git'            
+                
+        }
+        }
+        stage("Running Playbook"){
+            steps{
+                sh "ansible-playbook -i inventory/walmartprojecthost playbooks/installTomcat9.yaml --private-key=$EC2_USER_KEY --ssh-common-args='-o StrictHostKeyChecking=no'"
+            }
+        }
+        
+}//closing stage
+}//closing pipeline
