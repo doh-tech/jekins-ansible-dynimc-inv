@@ -1,4 +1,4 @@
-- hosts: Hostmachine
+- hosts: tomcatserver
   become: true
   tasks:
     - name: Install Java
