@@ -8,7 +8,7 @@ key_name="EC2-KEY"
 security_groups = ["launch-wizard-2"]
 instance_type = "t2.micro"
 tags = {
-Name = "tomcatserver"
+Name = "gloryserver"
 }
 
 }
