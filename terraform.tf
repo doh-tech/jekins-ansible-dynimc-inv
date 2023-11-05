@@ -1,22 +1,30 @@
 pipeline{
-    agent {
-        label "slave1"
-    }
-    environment{
-        EC2_USER_KEY=credentials("ec2instanceprivatekey")
-    }
-    stages{
-       stage("GitCheckOut"){
-           steps{
-              git credentialsId: '2f29cbb2-b2e8-4028-9f25-fc031a7fd916', url: 'https://github.com/doh-tech/jekins-ansible-dynimc-inv.git' 
-       }
-       } 
-       stage("Running terraform script"){
-           steps{
-               sh "terraform -chdir=terraformscripts init"
-               sh "terraform -chdir=terraformscripts apply --auto-approve"
-           }
-       }
-        
-}//closing stage
-}//clossing pipeline
+ agent{
+     label "slave1"
+ } 
+ 
+ environment{
+     EC2_PRIVATE_KEY=credentials("ec2privatekey")
+ }
+ stages{
+  
+      stage("GitCheckOut"){
+          steps{
+          git credentialsId: 'ce152094-edae-403e-829f-294ff8489331', url: 'https://github.com/doh-tech/jekins-ansible-dynimc-inv.git'    
+          }
+      }
+      stage("Creating Server"){
+          steps{
+        sh "terraform -chdir=terraformscripts init " 
+        sh "terraform -chdir=terraformscripts destroy --auto-approve"
+      }      
+      }/*
+      stage("Running playbook"){
+          steps{
+        sh "ansible-inventory --graph -i inventory/aws_ec2.yaml" 
+        sh "ansible-playbook -i inventory/aws_ec2.yaml playbooks/installTomcat9.yaml --private-key=$EC2_PRIVATE_KEY --ssh-common-args='-o StrictHostKeyChecking=no'"
+      }      
+      }
+     */
+ }//stage closing
+ }//pipeline closing
