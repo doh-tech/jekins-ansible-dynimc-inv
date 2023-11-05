@@ -3,6 +3,7 @@ region = "us-east-1"
 
 }
 resource  "aws_instance" "ec2instance"{
+count ="5"
 ami = "ami-05c13eab67c5d8861"
 key_name="EC2-KEY"
 security_groups = ["launch-wizard-2"]
